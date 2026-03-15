@@ -46,7 +46,7 @@
 
     onAdd: function (map) {
       this._map = map;
-      this._cv = L.DomUtil.create('canvas', 'leaflet-layer');
+      this._cv = L.DomUtil.create('canvas', 'leaflet-layer leaflet-zoom-animated');
       Object.assign(this._cv.style, { position: 'absolute', pointerEvents: 'none', zIndex: '250' });
       this._cv.style.willChange = 'transform';
       map.getPanes().overlayPane.appendChild(this._cv);
@@ -63,9 +63,10 @@
 
     _onZoomAnim: function (e) {
       var map = this._map;
-      var scale = map.getZoomScale(e.zoom, map.getZoom());
-      var newOrigin = map._latLngToNewLayerPoint(map.containerPointToLatLng([0, 0]), e.zoom, e.center);
-      L.DomUtil.setTransform(this._cv, newOrigin, scale);
+      if (!this._renderZoom) return;
+      var scale = map.getZoomScale(e.zoom, this._renderZoom);
+      var newPos = map._latLngToNewLayerPoint(this._renderTopLeft, e.zoom, e.center);
+      L.DomUtil.setTransform(this._cv, newPos, scale);
     },
 
     _debouncedRender: function () {
@@ -87,6 +88,8 @@
       cv.width = sz.x; cv.height = sz.y;
       var pos = map.containerPointToLayerPoint([0, 0]);
       L.DomUtil.setTransform(cv, pos, 1);
+      this._renderZoom = map.getZoom();
+      this._renderTopLeft = map.containerPointToLatLng([0, 0]);
       var ctx = cv.getContext('2d');
       ctx.clearRect(0, 0, sz.x, sz.y);
       if (!this._visible || this._stations.length === 0) return;
@@ -191,7 +194,7 @@
 
     onAdd: function (map) {
       this._map = map;
-      this._cv = L.DomUtil.create('canvas', 'leaflet-layer');
+      this._cv = L.DomUtil.create('canvas', 'leaflet-layer leaflet-zoom-animated');
       Object.assign(this._cv.style, { position: 'absolute', pointerEvents: 'none', zIndex: '200' });
       this._cv.style.willChange = 'transform';
       map.getPanes().overlayPane.appendChild(this._cv);
@@ -208,9 +211,10 @@
 
     _onZoomAnim: function (e) {
       var map = this._map;
-      var scale = map.getZoomScale(e.zoom, map.getZoom());
-      var newOrigin = map._latLngToNewLayerPoint(map.containerPointToLatLng([0, 0]), e.zoom, e.center);
-      L.DomUtil.setTransform(this._cv, newOrigin, scale);
+      if (!this._renderZoom) return;
+      var scale = map.getZoomScale(e.zoom, this._renderZoom);
+      var newPos = map._latLngToNewLayerPoint(this._renderTopLeft, e.zoom, e.center);
+      L.DomUtil.setTransform(this._cv, newPos, scale);
     },
 
     _debouncedRender: function () {
@@ -231,6 +235,8 @@
       cv.width = sz.x; cv.height = sz.y;
       var pos = map.containerPointToLayerPoint([0, 0]);
       L.DomUtil.setTransform(cv, pos, 1);
+      this._renderZoom = map.getZoom();
+      this._renderTopLeft = map.containerPointToLatLng([0, 0]);
       var ctx = cv.getContext('2d');
       ctx.clearRect(0, 0, sz.x, sz.y);
       if (!this._visible || this._stations.length === 0) return;
