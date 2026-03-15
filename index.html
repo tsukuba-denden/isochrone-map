@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>筑附 08:10 等時線マップ</title>
+  <meta name="description" content="筑波大学附属中学校の朝の連絡（08:10）に間に合う最遅出発時刻を等時線マップで可視化">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Title bar -->
+<div class="title-bar">
+  <h1>筑附 <span class="accent">08:10</span> 等時線マップ</h1>
+  <div class="subtitle">isochrone map — 朝の連絡に間に合う最遅出発時刻</div>
+</div>
+
+<!-- Settings gear button -->
+<button class="btn-settings" id="btn-settings" aria-label="設定">&#9881;</button>
+
+<!-- Settings panel -->
+<div class="settings-panel" id="settings-panel">
+  <div class="ctrl-section">
+    <div class="ctrl-title">テーマ</div>
+    <label class="ctrl-row">
+      <input type="checkbox" id="toggle-theme">
+      <span class="ctrl-toggle"></span>
+      <span class="ctrl-label">ダークモード</span>
+    </label>
+  </div>
+
+  <div class="ctrl-section">
+    <div class="ctrl-title">地図タイル</div>
+    <div class="ctrl-select">
+      <select id="select-tile">
+        <option value="gsi-pale">国土地理院 淡色</option>
+        <option value="gsi-std">国土地理院 標準</option>
+        <option value="osm-jp">OpenStreetMap JP</option>
+        <option value="gsi-dark">国土地理院 ダーク</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="ctrl-section">
+    <div class="ctrl-title">表示設定</div>
+    <label class="ctrl-row">
+      <input type="checkbox" id="toggle-contour" checked>
+      <span class="ctrl-toggle"></span>
+      <span class="ctrl-label">等時線</span>
+    </label>
+    <div class="ctrl-select" id="interval-row">
+      <span class="ctrl-label">間隔</span>
+      <select id="select-interval">
+        <option value="3">3分</option>
+        <option value="5" selected>5分</option>
+        <option value="10">10分</option>
+      </select>
+    </div>
+    <label class="ctrl-row">
+      <input type="checkbox" id="toggle-gradient">
+      <span class="ctrl-toggle"></span>
+      <span class="ctrl-label">グラデーション</span>
+    </label>
+    <label class="ctrl-row">
+      <input type="checkbox" id="toggle-labels" checked>
+      <span class="ctrl-toggle"></span>
+      <span class="ctrl-label">駅名ラベル</span>
+    </label>
+    <label class="ctrl-row">
+      <input type="checkbox" id="toggle-gakku" checked>
+      <span class="ctrl-toggle"></span>
+      <span class="ctrl-label">学区境界</span>
+    </label>
+  </div>
+
+  <div class="ctrl-section">
+    <div class="ctrl-title">データ情報</div>
+    <div class="ctrl-info" id="data-info">読み込み中...</div>
+    <button class="btn-devtools" id="btn-devtools">&#128295; 開発者ツール</button>
+  </div>
+</div>
+
+<!-- Legend -->
+<div class="legend" id="legend">
+  <div class="legend-title" id="legend-title">出発時刻（5分刻み等時線）</div>
+  <div class="legend-lines" id="legend-lines"></div>
+  <div class="legend-gradient-bar" id="legend-grad"></div>
+  <div class="legend-gradient-labels" id="legend-grad-labels">
+    <span>06:30</span><span>07:00</span><span>07:30</span><span>08:00</span>
+  </div>
+  <div class="legend-gakku" id="legend-gakku">
+    <span class="legend-gakku-swatch"></span>
+    <span class="legend-gakku-text">学区境界</span>
+  </div>
+</div>
+
+<!-- Map -->
+<div id="map"></div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="js/config.js?v=4"></script>
+<script src="js/data.js?v=4"></script>
+<script src="js/map.js?v=4"></script>
+<script src="js/renderer.js?v=4"></script>
+<script src="js/markers.js?v=4"></script>
+<script src="js/ui.js?v=4"></script>
+<script src="js/main.js?v=4"></script>
+</body>
+</html>
