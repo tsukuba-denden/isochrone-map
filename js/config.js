@@ -13,7 +13,7 @@
     destination: {
       lat: 35.7178,
       lng: 139.7284,
-      name: '筑波大学附属中学校（茗荷谷）',
+      name: '筑波大学附属中学校',
       arrivalTime: '08:10',
     },
 
