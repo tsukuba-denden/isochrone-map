@@ -48,14 +48,24 @@
       this._map = map;
       this._cv = L.DomUtil.create('canvas', 'leaflet-layer');
       Object.assign(this._cv.style, { position: 'absolute', pointerEvents: 'none', zIndex: '250' });
+      this._cv.style.willChange = 'transform';
       map.getPanes().overlayPane.appendChild(this._cv);
       map.on('moveend zoomend resize', this._debouncedRender, this);
+      map.on('zoomanim', this._onZoomAnim, this);
       this._render();
     },
 
     onRemove: function (map) {
       L.DomUtil.remove(this._cv);
       map.off('moveend zoomend resize', this._debouncedRender, this);
+      map.off('zoomanim', this._onZoomAnim, this);
+    },
+
+    _onZoomAnim: function (e) {
+      var map = this._map;
+      var scale = map.getZoomScale(e.zoom, map.getZoom());
+      var newOrigin = map._latLngToNewLayerPoint(map.containerPointToLatLng([0, 0]), e.zoom, e.center);
+      L.DomUtil.setTransform(this._cv, newOrigin, scale);
     },
 
     _debouncedRender: function () {
@@ -75,7 +85,8 @@
       if (!map) return;
       var sz = map.getSize(), cv = this._cv;
       cv.width = sz.x; cv.height = sz.y;
-      L.DomUtil.setPosition(cv, map.containerPointToLayerPoint([0, 0]));
+      var pos = map.containerPointToLayerPoint([0, 0]);
+      L.DomUtil.setTransform(cv, pos, 1);
       var ctx = cv.getContext('2d');
       ctx.clearRect(0, 0, sz.x, sz.y);
       if (!this._visible || this._stations.length === 0) return;
@@ -182,14 +193,24 @@
       this._map = map;
       this._cv = L.DomUtil.create('canvas', 'leaflet-layer');
       Object.assign(this._cv.style, { position: 'absolute', pointerEvents: 'none', zIndex: '200' });
+      this._cv.style.willChange = 'transform';
       map.getPanes().overlayPane.appendChild(this._cv);
       map.on('moveend zoomend resize', this._debouncedRender, this);
+      map.on('zoomanim', this._onZoomAnim, this);
       this._render();
     },
 
     onRemove: function (map) {
       L.DomUtil.remove(this._cv);
       map.off('moveend zoomend resize', this._debouncedRender, this);
+      map.off('zoomanim', this._onZoomAnim, this);
+    },
+
+    _onZoomAnim: function (e) {
+      var map = this._map;
+      var scale = map.getZoomScale(e.zoom, map.getZoom());
+      var newOrigin = map._latLngToNewLayerPoint(map.containerPointToLatLng([0, 0]), e.zoom, e.center);
+      L.DomUtil.setTransform(this._cv, newOrigin, scale);
     },
 
     _debouncedRender: function () {
@@ -208,7 +229,8 @@
       if (!map) return;
       var sz = map.getSize(), cv = this._cv;
       cv.width = sz.x; cv.height = sz.y;
-      L.DomUtil.setPosition(cv, map.containerPointToLayerPoint([0, 0]));
+      var pos = map.containerPointToLayerPoint([0, 0]);
+      L.DomUtil.setTransform(cv, pos, 1);
       var ctx = cv.getContext('2d');
       ctx.clearRect(0, 0, sz.x, sz.y);
       if (!this._visible || this._stations.length === 0) return;
