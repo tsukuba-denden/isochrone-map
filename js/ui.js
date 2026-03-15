@@ -146,7 +146,11 @@
 
       // Dev tools
       document.getElementById('btn-devtools').addEventListener('click', function () {
-        alert('Phase 4で実装予定');
+        if (window.DevTools) {
+          DevTools.toggle();
+        } else {
+          alert('開発者ツールは利用できません');
+        }
       });
     },
 

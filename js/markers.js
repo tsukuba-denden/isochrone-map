@@ -11,6 +11,7 @@
     _destMarker: null,
     _labelsEnabled: true,
     _gakkuLayer: null,
+    _gakkuAnimId: null,
 
     init: function (map, stations, meta) {
       this._map = map;
@@ -164,35 +165,110 @@
       this._updateDisplay();
     },
 
+    // 既存マーカーを全クリアして再作成
+    refresh: function (stations, meta) {
+      var self = this;
+      this._markers.forEach(function (item) {
+        if (self._map.hasLayer(item.marker)) self._map.removeLayer(item.marker);
+        if (self._map.hasLayer(item.label)) self._map.removeLayer(item.label);
+      });
+      this._markers = [];
+      this._meta = meta;
+      this._createStationMarkers(stations);
+      this._updateDisplay();
+    },
+
     updateTheme: function () {
       var strokeColor = this._getMarkerStroke();
       this._markers.forEach(function (item) {
         item.marker.setStyle({ color: strokeColor });
       });
+      // 学区レイヤーの色も更新
+      if (this._gakkuLayer) {
+        var cs = getComputedStyle(document.documentElement);
+        var sc = cs.getPropertyValue('--gakku-stroke').trim();
+        var fc = cs.getPropertyValue('--gakku-fill').trim();
+        if (this._gakkuGlow) {
+          this._gakkuGlow.eachLayer(function (l) { l.setStyle({ color: sc, fillColor: fc }); });
+        }
+        this._gakkuLayer.eachLayer(function (l) { l.setStyle({ color: sc }); });
+      }
     },
 
-    // 学区境界
+    // 学区境界（アニメーション破線）
     setGakkuData: function (geojson) {
       if (!geojson) return;
+      this._gakkuGeojson = geojson;
       var style = getComputedStyle(document.documentElement);
+      var strokeColor = style.getPropertyValue('--gakku-stroke').trim() || 'rgba(0,100,200,0.8)';
+      var fillColor = style.getPropertyValue('--gakku-fill').trim() || 'rgba(0,100,200,0.10)';
+
+      // 太い背景線（グロー効果）
+      this._gakkuGlow = L.geoJSON(geojson, {
+        style: {
+          fillColor: fillColor,
+          fillOpacity: 0.12,
+          color: strokeColor,
+          weight: 8,
+          opacity: 0.25,
+          lineCap: 'round',
+          lineJoin: 'round',
+        },
+      });
+
+      // アニメーションする破線（前面）
       this._gakkuLayer = L.geoJSON(geojson, {
         style: {
-          fillColor: style.getPropertyValue('--gakku-stroke').trim() || 'rgba(0,100,200,0.4)',
-          fillOpacity: 0.05,
-          color: style.getPropertyValue('--gakku-stroke').trim() || 'rgba(0,100,200,0.4)',
-          weight: 2,
-          dashArray: '6, 4',
-          opacity: 0.4,
+          fill: false,
+          color: strokeColor,
+          weight: 3,
+          opacity: 0.9,
+          dashArray: '12, 8',
+          dashOffset: '0',
+          lineCap: 'round',
         },
       });
     },
 
+    _animateGakku: function () {
+      if (!this._gakkuLayer) return;
+      var offset = 0;
+      var self = this;
+      function step() {
+        offset = (offset + 0.3) % 20;
+        self._gakkuLayer.eachLayer(function (layer) {
+          layer.setStyle({ dashOffset: String(-offset) });
+        });
+        self._gakkuAnimId = requestAnimationFrame(step);
+      }
+      step();
+    },
+
+    _stopGakkuAnim: function () {
+      if (this._gakkuAnimId) {
+        cancelAnimationFrame(this._gakkuAnimId);
+        this._gakkuAnimId = null;
+      }
+    },
+
     setGakkuVisible: function (visible) {
       if (!this._gakkuLayer) return;
-      if (visible && !this._map.hasLayer(this._gakkuLayer)) {
-        this._gakkuLayer.addTo(this._map);
-      } else if (!visible && this._map.hasLayer(this._gakkuLayer)) {
-        this._map.removeLayer(this._gakkuLayer);
+      if (visible) {
+        if (this._gakkuGlow && !this._map.hasLayer(this._gakkuGlow)) {
+          this._gakkuGlow.addTo(this._map);
+        }
+        if (!this._map.hasLayer(this._gakkuLayer)) {
+          this._gakkuLayer.addTo(this._map);
+        }
+        this._animateGakku();
+      } else {
+        this._stopGakkuAnim();
+        if (this._gakkuGlow && this._map.hasLayer(this._gakkuGlow)) {
+          this._map.removeLayer(this._gakkuGlow);
+        }
+        if (this._map.hasLayer(this._gakkuLayer)) {
+          this._map.removeLayer(this._gakkuLayer);
+        }
       }
     },
   };
