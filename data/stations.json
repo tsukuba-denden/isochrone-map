@@ -3,7 +3,7 @@
     "version": 2,
     "lastUpdated": "2026-03-14",
     "targetArrival": "08:08",
-    "targetStation": "茗荷谷",
+    "targetStation": "茗荷谷・護国寺",
     "targetMinutes": 488,
     "searchMode": "Yahoo乗換案内・急いでモード・平日"
   },
@@ -13,10 +13,10 @@
       "station": "茗荷谷",
       "lat": 35.716989,
       "lng": 139.737184,
-      "minutes": 485,
+      "minutes": 478,
       "major": true,
       "line": "丸ノ内線",
-      "route": "徒歩3分",
+      "route": "徒歩10分",
       "searchDate": "2026-03-10",
       "outside": false
     },
@@ -25,10 +25,10 @@
       "station": "護国寺",
       "lat": 35.719044,
       "lng": 139.72754,
-      "minutes": 482,
+      "minutes": 480,
       "major": true,
       "line": "有楽町線",
-      "route": "有楽町線→池袋→丸ノ内線→茗荷谷",
+      "route": "徒歩8分",
       "searchDate": "2026-03-10",
       "outside": false
     },
@@ -50,10 +50,9 @@
       "lng": 139.711085,
       "minutes": 475,
       "major": true,
-      "line": "丸ノ内線",
-      "route": "丸ノ内線→茗荷谷",
+      "line": "有楽町線",
+      "route": "有楽町線→護国寺",
       "searchDate": "2026-03-10",
-      "note": "②有楽町線使用も可",
       "outside": false
     },
     {
@@ -168,7 +167,7 @@
       "minutes": 460,
       "major": true,
       "line": "JR埼京線",
-      "route": "JR→池袋→丸ノ内線→茗荷谷",
+      "route": "JR→池袋→有楽町線→護国寺",
       "searchDate": "2026-03-10",
       "outside": false
     },
@@ -192,7 +191,7 @@
       "minutes": 442,
       "major": true,
       "line": "JR京浜東北線",
-      "route": "JR→池袋→丸ノ内線→茗荷谷",
+      "route": "JR→池袋→有楽町線→護国寺",
       "searchDate": "2026-03-10",
       "outside": false
     },
@@ -204,7 +203,7 @@
       "minutes": 449,
       "major": true,
       "line": "JR京浜東北線",
-      "route": "JR→池袋→丸ノ内線→茗荷谷",
+      "route": "JR→池袋→有楽町線→護国寺",
       "searchDate": "2026-03-10",
       "outside": false
     },
@@ -287,7 +286,7 @@
       "lng": 139.654368,
       "minutes": 455,
       "line": "西武池袋線",
-      "route": "西武池袋線→池袋→丸ノ内線→茗荷谷",
+      "route": "西武池袋線→池袋→有楽町線→護国寺",
       "searchDate": "2026-03-10",
       "outside": false
     },
