@@ -195,16 +195,22 @@
       }
     },
 
-    // 学区境界（アニメーション破線）
+    // 学区境界（アニメーション破線 — Canvas描画で全域レンダリング）
     setGakkuData: function (geojson) {
       if (!geojson) return;
       this._gakkuGeojson = geojson;
+
+      // Canvas レンダラー（padding大きめで画面外も事前描画）
+      this._gakkuRendererGlow = L.canvas({ padding: 1.0 });
+      this._gakkuRendererDash = L.canvas({ padding: 1.0 });
+
       var style = getComputedStyle(document.documentElement);
-      var strokeColor = style.getPropertyValue('--gakku-stroke').trim() || 'rgba(0,100,200,0.8)';
-      var fillColor = style.getPropertyValue('--gakku-fill').trim() || 'rgba(0,100,200,0.10)';
+      var strokeColor = style.getPropertyValue('--gakku-stroke').trim() || 'rgba(255,120,0,0.9)';
+      var fillColor = style.getPropertyValue('--gakku-fill').trim() || 'rgba(255,100,0,0.10)';
 
       // 太い背景線（グロー効果）
       this._gakkuGlow = L.geoJSON(geojson, {
+        renderer: this._gakkuRendererGlow,
         style: {
           fillColor: fillColor,
           fillOpacity: 0.12,
@@ -218,6 +224,7 @@
 
       // アニメーションする破線（前面）
       this._gakkuLayer = L.geoJSON(geojson, {
+        renderer: this._gakkuRendererDash,
         style: {
           fill: false,
           color: strokeColor,
@@ -228,6 +235,11 @@
           lineCap: 'round',
         },
       });
+
+      // パン中はアニメーション一時停止
+      var self = this;
+      this._map.on('movestart', function () { self._pauseGakkuAnim = true; });
+      this._map.on('moveend', function () { self._pauseGakkuAnim = false; });
     },
 
     _animateGakku: function () {
@@ -235,10 +247,12 @@
       var offset = 0;
       var self = this;
       function step() {
-        offset = (offset + 0.3) % 20;
-        self._gakkuLayer.eachLayer(function (layer) {
-          layer.setStyle({ dashOffset: String(-offset) });
-        });
+        if (!self._pauseGakkuAnim) {
+          offset = (offset + 0.3) % 20;
+          self._gakkuLayer.eachLayer(function (layer) {
+            layer.setStyle({ dashOffset: String(-offset) });
+          });
+        }
         self._gakkuAnimId = requestAnimationFrame(step);
       }
       step();
