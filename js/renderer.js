@@ -84,25 +84,28 @@
     _render: function () {
       var map = this._map;
       if (!map) return;
-      var sz = map.getSize(), cv = this._cv;
-      cv.width = sz.x; cv.height = sz.y;
-      var pos = map.containerPointToLayerPoint([0, 0]);
+      var sz = map.getSize();
+      var pad = CONFIG.canvasPadding;
+      var padX = Math.round(sz.x * pad), padY = Math.round(sz.y * pad);
+      var cv = this._cv;
+      cv.width = sz.x + padX * 2; cv.height = sz.y + padY * 2;
+      var pos = map.containerPointToLayerPoint([-padX, -padY]);
       L.DomUtil.setTransform(cv, pos, 1);
       this._renderZoom = map.getZoom();
-      this._renderTopLeft = map.containerPointToLatLng([0, 0]);
+      this._renderTopLeft = map.containerPointToLatLng([-padX, -padY]);
       var ctx = cv.getContext('2d');
-      ctx.clearRect(0, 0, sz.x, sz.y);
+      ctx.clearRect(0, 0, cv.width, cv.height);
       if (!this._visible || this._stations.length === 0) return;
 
       var cell = CONFIG.gridSize(map.getZoom());
-      var cols = Math.ceil(sz.x / cell) + 1;
-      var rows = Math.ceil(sz.y / cell) + 1;
+      var cols = Math.ceil(cv.width / cell) + 1;
+      var rows = Math.ceil(cv.height / cell) + 1;
       var grid = new Float32Array(cols * rows);
       var stations = this._stations;
 
       for (var r = 0; r < rows; r++) {
         for (var c = 0; c < cols; c++) {
-          var ll = map.containerPointToLatLng([c * cell, r * cell]);
+          var ll = map.containerPointToLatLng([c * cell - padX, r * cell - padY]);
           grid[r * cols + c] = idw(ll.lat, ll.lng, stations) || 0;
         }
       }
@@ -231,21 +234,24 @@
     _render: function () {
       var map = this._map;
       if (!map) return;
-      var sz = map.getSize(), cv = this._cv;
-      cv.width = sz.x; cv.height = sz.y;
-      var pos = map.containerPointToLayerPoint([0, 0]);
+      var sz = map.getSize();
+      var pad = CONFIG.canvasPadding;
+      var padX = Math.round(sz.x * pad), padY = Math.round(sz.y * pad);
+      var cv = this._cv;
+      cv.width = sz.x + padX * 2; cv.height = sz.y + padY * 2;
+      var pos = map.containerPointToLayerPoint([-padX, -padY]);
       L.DomUtil.setTransform(cv, pos, 1);
       this._renderZoom = map.getZoom();
-      this._renderTopLeft = map.containerPointToLatLng([0, 0]);
+      this._renderTopLeft = map.containerPointToLatLng([-padX, -padY]);
       var ctx = cv.getContext('2d');
-      ctx.clearRect(0, 0, sz.x, sz.y);
+      ctx.clearRect(0, 0, cv.width, cv.height);
       if (!this._visible || this._stations.length === 0) return;
 
       var step = Math.max(4, Math.floor(Math.min(sz.x, sz.y) / 180));
       var stations = this._stations;
-      for (var x = 0; x < sz.x; x += step) {
-        for (var y = 0; y < sz.y; y += step) {
-          var ll = map.containerPointToLatLng([x, y]);
+      for (var x = 0; x < cv.width; x += step) {
+        for (var y = 0; y < cv.height; y += step) {
+          var ll = map.containerPointToLatLng([x - padX, y - padY]);
           var val = idw(ll.lat, ll.lng, stations);
           if (val !== null) {
             ctx.fillStyle = colorToCSS(minutesToColor(val), 0.28);

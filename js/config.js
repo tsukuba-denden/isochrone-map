@@ -40,6 +40,9 @@
     // 描画デバウンス
     renderDebounceMs: 150,
 
+    // Canvas描画パディング（ビューポートに対する割合）
+    canvasPadding: 0.5,
+
     // ズーム別グリッドサイズ
     gridSize: function (zoom) {
       if (zoom <= 10) return 8;
