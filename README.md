@@ -2,4 +2,4 @@
 
 筑波大学附属中学校の朝の連絡（08:10）に間に合うための最遅出発時刻を、 等時線（isochrone）マップとして可視化するWebアプリケーション。
 
-https://tsukuba-denden.github.io/isochrone-map/
+<https://tsukuba-denden.github.io/isochrone-map/>
