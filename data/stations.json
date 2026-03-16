@@ -621,8 +621,8 @@
     {
       "id": "akatsuka",
       "station": "赤塚",
-      "lat": 36.381755,
-      "lng": 140.415248,
+      "lat": 35.770558,
+      "lng": 139.644482,
       "minutes": 452,
       "line": "東武東上線",
       "searchDate": "2025-11-03"
@@ -691,7 +691,7 @@
       "searchDate": "2025-11-03"
     },
     {
-      "id": "ikebukuro",
+      "id": "ikebukuro-tobu-tojo",
       "station": "池袋",
       "lat": 35.730256,
       "lng": 139.711086,
@@ -863,7 +863,7 @@
       "outside": true
     },
     {
-      "id": "ikebukuro",
+      "id": "ikebukuro-saikyo",
       "station": "池袋",
       "lat": 35.730256,
       "lng": 139.711086,
@@ -1226,7 +1226,7 @@
       "searchDate": "2025-11-04"
     },
     {
-      "id": "shinshuutsu",
+      "id": "shin-akitsu",
       "station": "新秋津",
       "lat": 35.778331,
       "lng": 139.493592,
@@ -1246,7 +1246,7 @@
       "note": "武蔵野線07:20発だが朝霞台乗換のため実質07:22"
     },
     {
-      "id": "nan-etsutani",
+      "id": "minami-koshigaya",
       "station": "南越谷",
       "lat": 35.876106,
       "lng": 139.790499,
@@ -1275,7 +1275,7 @@
       "searchDate": "2026-03-14"
     },
     {
-      "id": "kashiwanohakyanpasu",
+      "id": "kashiwanoha-campus",
       "station": "柏の葉キャンパス",
       "lat": 35.89308,
       "lng": 139.952454,
@@ -1302,7 +1302,7 @@
       "searchDate": "2026-03-14"
     },
     {
-      "id": "nanryuuyama",
+      "id": "minami-nagareyama",
       "station": "南流山",
       "lat": 35.838035,
       "lng": 139.903865,
@@ -1367,8 +1367,8 @@
     {
       "id": "heiwadai",
       "station": "平和台",
-      "lat": 35.757863,
-      "lng": 139.653762,
+      "lat": 35.85123,
+      "lng": 139.901108,
       "minutes": 406,
       "line": "流 鉄 流 山 線",
       "searchDate": "2026-03-14"
