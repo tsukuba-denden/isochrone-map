@@ -9,13 +9,31 @@
   function idw(lat, lng, stations, power) {
     if (!power) power = CONFIG.idwPower;
     var num = 0, den = 0;
+    var cosLat = Math.cos(lat * Math.PI / 180);
+    var halfPower = power / 2;
     for (var i = 0; i < stations.length; i++) {
       var s = stations[i];
       var dlat = lat - s.lat;
-      var dlng = (lng - s.lng) * Math.cos(lat * Math.PI / 180);
-      var d = Math.sqrt(dlat * dlat + dlng * dlng);
-      if (d < 0.0005) return s.minutes;
-      var w = 1 / Math.pow(d, power);
+      var dlng = (lng - s.lng) * cosLat;
+      var distSq = dlat * dlat + dlng * dlng;
+      if (distSq < 0.00000025) return s.minutes;
+      var w = 1 / Math.pow(distSq, halfPower);
+      num += w * s.minutes;
+      den += w;
+    }
+    return den > 0 ? num / den : null;
+  }
+
+  // IDW補間 (ピクセル座標版: 地理座標の代わりにコンテナ上のピクセル座標を使用し、ループ内のプロジェクション計算を回避する)
+  function idwPx(x, y, pixStations, halfPower) {
+    var num = 0, den = 0;
+    for (var i = 0; i < pixStations.length; i++) {
+      var s = pixStations[i];
+      var dx = x - s.x;
+      var dy = y - s.y;
+      var distSq = dx * dx + dy * dy;
+      if (distSq < 0.1) return s.minutes;
+      var w = 1 / Math.pow(distSq, halfPower);
       num += w * s.minutes;
       den += w;
     }
@@ -103,10 +121,20 @@
       var grid = new Float32Array(cols * rows);
       var stations = this._stations;
 
+      // 各駅のコンテナ上のピクセル座標を事前算出（プロジェクションをループ外に出す）
+      var halfPower = CONFIG.idwPower / 2;
+      var pixStations = new Array(stations.length);
+      for (var i = 0; i < stations.length; i++) {
+        var s = stations[i];
+        var p = map.latLngToContainerPoint([s.lat, s.lng]);
+        pixStations[i] = { x: p.x + padX, y: p.y + padY, minutes: s.minutes };
+      }
+
       for (var r = 0; r < rows; r++) {
+        var cy = r * cell;
         for (var c = 0; c < cols; c++) {
-          var ll = map.containerPointToLatLng([c * cell - padX, r * cell - padY]);
-          grid[r * cols + c] = idw(ll.lat, ll.lng, stations) || 0;
+          var cx = c * cell;
+          grid[r * cols + c] = idwPx(cx, cy, pixStations, halfPower) || 0;
         }
       }
 
@@ -249,10 +277,18 @@
 
       var step = Math.max(4, Math.floor(Math.min(sz.x, sz.y) / 180));
       var stations = this._stations;
+      
+      var halfPower = CONFIG.idwPower / 2;
+      var pixStations = new Array(stations.length);
+      for (var i = 0; i < stations.length; i++) {
+        var s = stations[i];
+        var p = map.latLngToContainerPoint([s.lat, s.lng]);
+        pixStations[i] = { x: p.x + padX, y: p.y + padY, minutes: s.minutes };
+      }
+
       for (var x = 0; x < cv.width; x += step) {
         for (var y = 0; y < cv.height; y += step) {
-          var ll = map.containerPointToLatLng([x - padX, y - padY]);
-          var val = idw(ll.lat, ll.lng, stations);
+          var val = idwPx(x, y, pixStations, halfPower);
           if (val !== null) {
             ctx.fillStyle = colorToCSS(minutesToColor(val), 0.28);
             ctx.fillRect(x, y, step, step);

@@ -47,7 +47,7 @@
     gridSize: function (zoom) {
       if (zoom <= 10) return 8;
       if (zoom <= 12) return 5;
-      return 3;
+      return 5;
     },
 
     // タイル定義
