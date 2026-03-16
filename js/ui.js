@@ -14,6 +14,12 @@
     init: function (onUpdate) {
       this._onUpdate = onUpdate;
       this._settings = this._loadSettings();
+      
+      // Initialize panel open state based on UA/screen width
+      var isMobileUA = /iPhone|iPod|Android.*Mobile/i.test(navigator.userAgent);
+      this._panelOpen = !isMobileUA && window.innerWidth > 600;
+      document.getElementById('settings-panel').classList.toggle('open', this._panelOpen);
+      
       this._applyTheme(this._settings.theme);
       this._bindEvents();
       this._syncUI();
