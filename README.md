@@ -4,7 +4,7 @@
 
 🌎 **[ページはこちら](https://tsukuba-denden.github.io/isochrone-map/)**
 
-![demo image](image.png)
+![demo image](ogp.png)
 
 
 ## 主な機能
