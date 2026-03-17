@@ -103,6 +103,36 @@ body {
   font-family: 'JetBrains Mono', monospace;
 }
 
+/* ---- Search ---- */
+.search-container {
+  margin-top: 10px;
+  pointer-events: auto;
+  max-width: 300px;
+}
+
+#station-search {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border-panel);
+  background: var(--bg-panel);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+#station-search:focus {
+  border-color: #ff6b6b;
+  box-shadow: 0 4px 12px rgba(255,107,107,0.15);
+}
+
+#station-search::placeholder {
+  color: var(--text-muted);
+}
+
 /* ---- Settings gear button ---- */
 .btn-settings {
   position: fixed;

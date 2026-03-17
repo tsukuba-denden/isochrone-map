@@ -65,9 +65,47 @@
       DataManager.getMajorCount(),
       DataManager.getOutsideCount()
     );
+
+    initSearch(stations, map);
   }).catch(function (err) {
     console.error('データ読み込みエラー:', err);
   });
+
+  function initSearch(stations, map) {
+    var dataList = document.getElementById('station-list');
+    var searchInput = document.getElementById('station-search');
+    
+    if (dataList) {
+      var uniqueStations = {};
+      stations.forEach(function(s) {
+        if (!uniqueStations[s.station]) {
+          uniqueStations[s.station] = true;
+          var option = document.createElement('option');
+          option.value = s.station;
+          dataList.appendChild(option);
+        }
+      });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('change', function(e) {
+        var val = e.target.value.trim();
+        if (!val) return;
+        var marker = MarkerManager.findStationMarker(val);
+        if (marker) {
+          map.setView(marker.getLatLng(), 15, { animate: true });
+          marker.openTooltip();
+          searchInput.blur();
+        }
+      });
+
+      searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          searchInput.blur();
+        }
+      });
+    }
+  }
 
   function onSettingChanged(key, value) {
     switch (key) {

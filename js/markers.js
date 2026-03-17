@@ -165,6 +165,15 @@
       this._updateDisplay();
     },
 
+    findStationMarker: function (name) {
+      for (var i = 0; i < this._markers.length; i++) {
+        if (this._markers[i].data.station === name) {
+          return this._markers[i].marker;
+        }
+      }
+      return null;
+    },
+
     // 既存マーカーを全クリアして再作成
     refresh: function (stations, meta) {
       var self = this;
