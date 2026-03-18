@@ -56,7 +56,7 @@
       stations.forEach(function (s) {
         var c = minutesToColor(s.minutes);
         var ts = minutesToTimeStr(s.minutes);
-        var travel = targetMinutes - s.minutes;
+        var travelHtml = s.duration !== undefined ? '<div class="tt-travel">所要 ' + s.duration + '分</div>' : '';
         var isMajor = !!s.major;
         var isOutside = !!s.outside;
 
@@ -84,7 +84,7 @@
             outsideBadge +
             '<div class="tt-name">' + s.station + '</div>' +
             '<div class="tt-time" style="color:' + colorToCSS(c) + '">' + ts + '</div>' +
-            '<div class="tt-travel">所要 ' + travel + '分</div>' +
+            travelHtml +
             '<div class="tt-divider"></div>' +
             '<div class="tt-line">' + s.line + '</div>' +
             detailSection +

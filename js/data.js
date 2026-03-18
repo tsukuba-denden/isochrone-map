@@ -54,6 +54,7 @@
     },
 
     getTravelMinutes: function (station) {
+      if (station.duration !== undefined) return station.duration;
       if (!this.meta) return 0;
       return this.meta.targetMinutes - station.minutes;
     },
