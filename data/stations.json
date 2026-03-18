@@ -696,18 +696,6 @@
       "searchDate": "2025-11-03"
     },
     {
-      "id": "ikebukuro-tobu-tojo",
-      "station": "池袋",
-      "lat": 35.730256,
-      "lng": 139.711086,
-      "minutes": 475,
-      "line": "東武東上線",
-      "searchDate": "2025-11-03",
-      "major": true,
-      "note": "有楽町線",
-      "duration": 13
-    },
-    {
       "id": "yubiougi",
       "station": "指扇",
       "lat": 35.917023,
@@ -867,18 +855,6 @@
       "line": "埼京線",
       "searchDate": "2025-11-04",
       "outside": true
-    },
-    {
-      "id": "ikebukuro-saikyo",
-      "station": "池袋",
-      "lat": 35.730256,
-      "lng": 139.711086,
-      "minutes": 469,
-      "line": "埼京線",
-      "searchDate": "2025-11-04",
-      "major": true,
-      "outside": true,
-      "duration": 13
     },
     {
       "id": "toudaimiya",
@@ -1398,16 +1374,6 @@
       "minutes": 411,
       "line": "流 鉄 流 山 線",
       "searchDate": "2026-03-14"
-    },
-    {
-      "id": "ikebukuro",
-      "station": "池袋",
-      "lat": 35.7295,
-      "lng": 139.7109,
-      "minutes": 475,
-      "line": "山手線",
-      "major": true,
-      "duration": 13
     },
     {
       "id": "otsuka",
