@@ -6,7 +6,7 @@
 
 /* ---- CSS Variables ---- */
 :root {
-  --bg-panel: rgba(255, 255, 255, 0.92);
+  --bg-panel: rgba(255, 255, 255, 0.5);
   --border-panel: rgba(0, 0, 0, 0.08);
   --text-primary: #1a1a1a;
   --text-secondary: #666;
@@ -26,7 +26,7 @@
 }
 
 [data-theme="dark"] {
-  --bg-panel: rgba(10, 10, 15, 0.90);
+  --bg-panel: rgba(10, 10, 15, 0.5);
   --border-panel: rgba(255, 255, 255, 0.08);
   --text-primary: #e0e0e0;
   --text-secondary: #aaa;
