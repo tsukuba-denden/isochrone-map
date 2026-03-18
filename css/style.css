@@ -334,6 +334,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 3px;
+  margin-bottom: 12px;
 }
 
 .legend-item {
