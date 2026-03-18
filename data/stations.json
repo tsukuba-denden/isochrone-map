@@ -42,7 +42,8 @@
       "line": "有楽町線",
       "route": "有楽町線→護国寺",
       "searchDate": "2026-03-10",
-      "outside": false
+      "outside": false,
+      "duration": 13
     },
     {
       "id": "shibuya",
@@ -50,9 +51,10 @@
       "lat": 35.658871,
       "lng": 139.701238,
       "minutes": 458,
-      "line": "東横線",
+      "line": "半蔵門線",
       "searchDate": "2025-11-03",
-      "major": true
+      "major": true,
+      "duration": 30
     },
     {
       "id": "daikanyama",
@@ -171,7 +173,8 @@
       "lng": 139.715775,
       "minutes": 449,
       "line": "目黒線",
-      "searchDate": "2025-11-03"
+      "searchDate": "2025-11-03",
+      "duration": 39
     },
     {
       "id": "fudoumae",
@@ -461,7 +464,8 @@
       "lng": 139.766857,
       "minutes": 458,
       "line": "山手線(舎人ライナー沿線)",
-      "searchDate": "2025-11-03"
+      "searchDate": "2025-11-03",
+      "duration": 30
     },
     {
       "id": "nippori",
@@ -470,7 +474,8 @@
       "lng": 139.771287,
       "minutes": 457,
       "line": "山手線(舎人ライナー沿線)",
-      "searchDate": "2025-11-03"
+      "searchDate": "2025-11-03",
+      "duration": 31
     },
     {
       "id": "ikejirioohashi",
@@ -699,7 +704,8 @@
       "line": "東武東上線",
       "searchDate": "2025-11-03",
       "major": true,
-      "note": "有楽町線"
+      "note": "有楽町線",
+      "duration": 13
     },
     {
       "id": "yubiougi",
@@ -871,7 +877,8 @@
       "line": "埼京線",
       "searchDate": "2025-11-04",
       "major": true,
-      "outside": true
+      "outside": true,
+      "duration": 13
     },
     {
       "id": "toudaimiya",
@@ -1399,7 +1406,8 @@
       "lng": 139.7109,
       "minutes": 475,
       "line": "山手線",
-      "major": true
+      "major": true,
+      "duration": 13
     },
     {
       "id": "otsuka",
@@ -1407,7 +1415,8 @@
       "lat": 35.7314,
       "lng": 139.728,
       "minutes": 470,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 18
     },
     {
       "id": "mejiro",
@@ -1415,7 +1424,8 @@
       "lat": 35.7212,
       "lng": 139.7066,
       "minutes": 467,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 21
     },
     {
       "id": "shinjuku",
@@ -1424,7 +1434,8 @@
       "lng": 139.7003,
       "minutes": 466,
       "line": "山手線",
-      "major": true
+      "major": true,
+      "duration": 22
     },
     {
       "id": "takadanobaba",
@@ -1432,7 +1443,8 @@
       "lat": 35.7123,
       "lng": 139.7038,
       "minutes": 465,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 23
     },
     {
       "id": "yurakucho",
@@ -1440,7 +1452,8 @@
       "lat": 35.675,
       "lng": 139.7633,
       "minutes": 465,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 23
     },
     {
       "id": "sugamo",
@@ -1448,7 +1461,8 @@
       "lat": 35.7334,
       "lng": 139.7393,
       "minutes": 464,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 24
     },
     {
       "id": "tokyo",
@@ -1457,7 +1471,8 @@
       "lng": 139.7671,
       "minutes": 463,
       "line": "山手線",
-      "major": true
+      "major": true,
+      "duration": 22
     },
     {
       "id": "shin-okubo",
@@ -1465,7 +1480,8 @@
       "lat": 35.7013,
       "lng": 139.7001,
       "minutes": 463,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 25
     },
     {
       "id": "kanda",
@@ -1473,7 +1489,8 @@
       "lat": 35.6917,
       "lng": 139.7706,
       "minutes": 462,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 21
     },
     {
       "id": "akihabara",
@@ -1482,7 +1499,8 @@
       "lng": 139.7731,
       "minutes": 462,
       "line": "山手線",
-      "major": true
+      "major": true,
+      "duration": 23
     },
     {
       "id": "komagome",
@@ -1490,7 +1508,8 @@
       "lat": 35.7365,
       "lng": 139.747,
       "minutes": 462,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 23
     },
     {
       "id": "yoyogi",
@@ -1498,7 +1517,8 @@
       "lat": 35.683,
       "lng": 139.702,
       "minutes": 461,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 27
     },
     {
       "id": "tabata",
@@ -1506,24 +1526,8 @@
       "lat": 35.738,
       "lng": 139.7608,
       "minutes": 460,
-      "line": "山手線"
-    },
-    {
-      "id": "shibuya",
-      "station": "渋谷",
-      "lat": 35.658,
-      "lng": 139.7016,
-      "minutes": 458,
       "line": "山手線",
-      "major": true
-    },
-    {
-      "id": "nishi-nippori",
-      "station": "西日暮里",
-      "lat": 35.732,
-      "lng": 139.7668,
-      "minutes": 458,
-      "line": "山手線"
+      "duration": 28
     },
     {
       "id": "shimbashi",
@@ -1531,15 +1535,8 @@
       "lat": 35.6664,
       "lng": 139.7583,
       "minutes": 458,
-      "line": "山手線"
-    },
-    {
-      "id": "nippori",
-      "station": "日暮里",
-      "lat": 35.7277,
-      "lng": 139.7709,
-      "minutes": 457,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 30
     },
     {
       "id": "okachimachi",
@@ -1547,7 +1544,8 @@
       "lat": 35.7075,
       "lng": 139.7747,
       "minutes": 457,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 28
     },
     {
       "id": "ueno",
@@ -1556,7 +1554,8 @@
       "lng": 139.7773,
       "minutes": 456,
       "line": "山手線",
-      "major": true
+      "major": true,
+      "duration": 29
     },
     {
       "id": "harajuku",
@@ -1564,7 +1563,8 @@
       "lat": 35.6702,
       "lng": 139.7027,
       "minutes": 456,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 32
     },
     {
       "id": "hamamatsucho",
@@ -1572,7 +1572,8 @@
       "lat": 35.6553,
       "lng": 139.7571,
       "minutes": 456,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 32
     },
     {
       "id": "uguisudani",
@@ -1580,7 +1581,8 @@
       "lat": 35.7205,
       "lng": 139.778,
       "minutes": 455,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 33
     },
     {
       "id": "ebisu",
@@ -1588,7 +1590,8 @@
       "lat": 35.6467,
       "lng": 139.7101,
       "minutes": 455,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 30
     },
     {
       "id": "tamachi",
@@ -1596,7 +1599,8 @@
       "lat": 35.6457,
       "lng": 139.7476,
       "minutes": 454,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 34
     },
     {
       "id": "osaki",
@@ -1604,7 +1608,8 @@
       "lat": 35.6198,
       "lng": 139.7282,
       "minutes": 451,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 34
     },
     {
       "id": "takanawa-gateway",
@@ -1612,7 +1617,8 @@
       "lat": 35.6355,
       "lng": 139.7407,
       "minutes": 451,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 37
     },
     {
       "id": "shinagawa",
@@ -1621,15 +1627,8 @@
       "lng": 139.7387,
       "minutes": 450,
       "line": "山手線",
-      "major": true
-    },
-    {
-      "id": "meguro",
-      "station": "目黒",
-      "lat": 35.634,
-      "lng": 139.7158,
-      "minutes": 449,
-      "line": "山手線"
+      "major": true,
+      "duration": 35
     },
     {
       "id": "gotanda",
@@ -1637,7 +1636,8 @@
       "lat": 35.6264,
       "lng": 139.7234,
       "minutes": 446,
-      "line": "山手線"
+      "line": "山手線",
+      "duration": 39
     }
   ]
 }
