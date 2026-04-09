@@ -222,6 +222,10 @@
       var texture = new THREE.CanvasTexture(cv);
       texture.minFilter = THREE.LinearFilter;
       texture.magFilter = THREE.LinearFilter;
+      if (this._renderer && this._renderer.capabilities) {
+        var maxAnisotropy = this._renderer.capabilities.getMaxAnisotropy();
+        texture.anisotropy = Math.max(1, Math.min(8, maxAnisotropy || 1));
+      }
 
       // Cache for mode switching
       this._lastGrid = { grid: pg.grid, cols: pg.cols, rows: pg.rows };
@@ -352,9 +356,13 @@
         // Mesh 1: Map texture (base)
         var mapMat = new THREE.MeshLambertMaterial({
           map: mapTexture,
-          side: THREE.DoubleSide
+          side: THREE.FrontSide,
+          polygonOffset: true,
+          polygonOffsetFactor: 1,
+          polygonOffsetUnits: 1
         });
         this._mapMesh = new THREE.Mesh(geom, mapMat);
+        this._mapMesh.renderOrder = 1;
         this._scene.add(this._mapMesh);
 
         // Mesh 2: Gradient overlay (semi-transparent)
@@ -363,12 +371,15 @@
           vertexColors: true,
           transparent: true,
           opacity: 0.5,
-          side: THREE.DoubleSide,
-          depthWrite: false
+          side: THREE.FrontSide,
+          depthWrite: false,
+          polygonOffset: true,
+          polygonOffsetFactor: -1,
+          polygonOffsetUnits: -1
         });
         this._gradMesh = new THREE.Mesh(gradGeom, gradMat);
-        // Tiny offset to prevent z-fighting
-        this._gradMesh.position.y = 0.05;
+        // Keep draw order stable between base map and transparent overlay.
+        this._gradMesh.renderOrder = 2;
         this._scene.add(this._gradMesh);
       }
 
