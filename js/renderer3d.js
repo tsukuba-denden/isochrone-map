@@ -168,6 +168,10 @@
       var tileId = settings.tileId || CONFIG.defaultTile[settings.theme];
       var tileDef = CONFIG.tiles[tileId] || CONFIG.tiles['gsi-pale'];
       var urlTemplate = tileDef.url;
+      var tileFilter = tileDef.invert
+        ? 'invert(1) hue-rotate(180deg) brightness(0.95) contrast(1.1)'
+        : 'none';
+      ctx.filter = tileFilter;
 
       var total = tilesX * tilesY;
       var loaded = 0;
@@ -412,6 +416,17 @@
         this._lastMapTexture = tex;
         this._buildMesh(g.grid, g.cols, g.rows, tex, uv.uMin, uv.uMax, uv.vMin, uv.vMax);
       }
+    },
+
+    refreshMapTexture: function () {
+      // Reuse cached terrain data and rebuild only the map texture with current tile setting.
+      if (!this._scene || !this._gridExtent || !this._lastGrid) return;
+      this._pendingGrid = {
+        grid: this._lastGrid.grid,
+        cols: this._lastGrid.cols,
+        rows: this._lastGrid.rows
+      };
+      this._loadMapTiles();
     },
 
     setFlatPlaneHeight: function (height) {

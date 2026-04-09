@@ -128,9 +128,15 @@
         MarkerManager.updateTheme();
         contourOverlay.refresh();
         Renderer3D.updateTheme();
+        if (UIManager.getSettings().threeDEnabled) {
+          Renderer3D.refreshMapTexture();
+        }
         break;
       case 'tile':
         MapManager.setTileByUser(value);
+        if (UIManager.getSettings().threeDEnabled) {
+          Renderer3D.refreshMapTexture();
+        }
         break;
       case 'contour':
         contourOverlay.setVisible(value);
