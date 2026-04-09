@@ -23,6 +23,8 @@
   <meta property="og:locale" content="ja_JP">
 
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -66,6 +68,23 @@
 
   <div class="ctrl-section">
     <div class="ctrl-title">表示設定</div>
+    <label class="ctrl-row">
+      <input type="checkbox" id="toggle-3d">
+      <span class="ctrl-toggle"></span>
+      <span class="ctrl-label">3D表示</span>
+    </label>
+    <div class="ctrl-select" id="3d-mapmode-row" style="display:none">
+      <span class="ctrl-label">地図</span>
+      <select id="select-3d-mapmode">
+        <option value="texture">貼り付け</option>
+        <option value="flat">平面</option>
+      </select>
+    </div>
+    <div class="ctrl-select" id="3d-flat-height-row" style="display:none">
+      <span class="ctrl-label">平面高さ</span>
+      <input type="range" id="range-3d-flat-height" min="-5" max="110" step="1">
+      <span class="ctrl-value" id="label-3d-flat-height">+4</span>
+    </div>
     <label class="ctrl-row">
       <input type="checkbox" id="toggle-contour" checked>
       <span class="ctrl-toggle"></span>
@@ -117,18 +136,22 @@
   </div>
 </div>
 
+<!-- 3D Canvas -->
+<div id="canvas-3d"></div>
+
 <!-- Map -->
 <div id="map"></div>
 
 <!-- Scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="js/config.js?v=4"></script>
-<script src="js/data.js?v=4"></script>
-<script src="js/map.js?v=4"></script>
-<script src="js/renderer.js?v=4"></script>
-<script src="js/markers.js?v=4"></script>
-<script src="js/ui.js?v=4"></script>
-<script src="js/main.js?v=4"></script>
-<script src="js/devtools.js?v=4"></script>
+<script src="js/config.js?v=9"></script>
+<script src="js/data.js?v=9"></script>
+<script src="js/map.js?v=9"></script>
+<script src="js/renderer.js?v=9"></script>
+<script src="js/renderer3d.js?v=9"></script>
+<script src="js/markers.js?v=9"></script>
+<script src="js/ui.js?v=9"></script>
+<script src="js/main.js?v=9"></script>
+<script src="js/devtools.js?v=9"></script>
 </body>
 </html>

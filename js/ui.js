@@ -35,6 +35,9 @@
       return {
         theme: prefersDark ? 'dark' : 'light',
         tileId: null,  // null = auto
+        threeDEnabled: false,
+        threeDMapMode: 'texture',
+        threeDFlatHeight: 4,
         contourEnabled: CONFIG.defaultContourEnabled,
         contourInterval: CONFIG.defaultContourInterval,
         gradientEnabled: CONFIG.defaultGradientEnabled,
@@ -71,6 +74,11 @@
 
     _syncUI: function () {
       var s = this._settings;
+      document.getElementById('toggle-3d').checked = s.threeDEnabled;
+      document.getElementById('select-3d-mapmode').value = s.threeDMapMode || 'texture';
+      document.getElementById('range-3d-flat-height').value = String(s.threeDFlatHeight);
+      document.getElementById('label-3d-flat-height').textContent = this._formatHeightLabel(s.threeDFlatHeight);
+      this._sync3DControlRows();
       document.getElementById('toggle-contour').checked = s.contourEnabled;
       document.getElementById('toggle-gradient').checked = s.gradientEnabled;
       document.getElementById('toggle-labels').checked = s.labelsEnabled;
@@ -81,6 +89,7 @@
 
       // Interval selector visibility
       document.getElementById('interval-row').style.display = s.contourEnabled ? '' : 'none';
+
     },
 
     _bindEvents: function () {
@@ -150,6 +159,31 @@
         self._notify('gakku', this.checked);
       });
 
+      // 3D toggle
+      document.getElementById('toggle-3d').addEventListener('change', function () {
+        self._settings.threeDEnabled = this.checked;
+        self._sync3DControlRows();
+        self._saveSettings();
+        self._buildLegend();
+        self._notify('threeD', this.checked);
+      });
+
+      // 3D map mode
+      document.getElementById('select-3d-mapmode').addEventListener('change', function () {
+        self._settings.threeDMapMode = this.value;
+        self._sync3DControlRows();
+        self._saveSettings();
+        self._notify('threeDMapMode', this.value);
+      });
+
+      // 3D flat plane height
+      document.getElementById('range-3d-flat-height').addEventListener('input', function () {
+        self._settings.threeDFlatHeight = parseInt(this.value, 10);
+        document.getElementById('label-3d-flat-height').textContent = self._formatHeightLabel(self._settings.threeDFlatHeight);
+        self._saveSettings();
+        self._notify('threeDFlatHeight', self._settings.threeDFlatHeight);
+      });
+
       // Dev tools
       document.getElementById('btn-devtools').addEventListener('click', function () {
         if (window.DevTools) {
@@ -158,6 +192,28 @@
           alert('開発者ツールは利用できません');
         }
       });
+    },
+
+    _sync3DDisabledState: function (is3D) {
+      var ids = ['toggle-contour', 'toggle-gradient', 'toggle-labels', 'toggle-gakku'];
+      for (var i = 0; i < ids.length; i++) {
+        var row = document.getElementById(ids[i]).closest('.ctrl-row');
+        if (row) row.classList.toggle('disabled', is3D);
+      }
+      var intervalRow = document.getElementById('interval-row');
+      if (intervalRow) intervalRow.classList.toggle('disabled', is3D);
+    },
+
+    _sync3DControlRows: function () {
+      var s = this._settings;
+      var show3D = !!s.threeDEnabled;
+      var isFlat = (s.threeDMapMode || 'texture') === 'flat';
+      document.getElementById('3d-mapmode-row').style.display = show3D ? '' : 'none';
+      document.getElementById('3d-flat-height-row').style.display = (show3D && isFlat) ? '' : 'none';
+    },
+
+    _formatHeightLabel: function (v) {
+      return (v > 0 ? '+' : '') + String(v);
     },
 
     _notify: function (key, value) {
@@ -181,7 +237,9 @@
       var gradLabels = document.getElementById('legend-grad-labels');
 
       // Title
-      if (s.contourEnabled && s.gradientEnabled) {
+      if (s.threeDEnabled) {
+        title.textContent = '出発時刻（3D地形）';
+      } else if (s.contourEnabled && s.gradientEnabled) {
         title.textContent = '出発時刻（等時線＋グラデーション）';
       } else if (s.contourEnabled) {
         title.textContent = '出発時刻（' + s.contourInterval + '分刻み等時線）';
@@ -193,7 +251,7 @@
 
       // Contour legend (10-min only)
       container.innerHTML = '';
-      container.style.display = s.contourEnabled ? '' : 'none';
+      container.style.display = (s.contourEnabled && !s.threeDEnabled) ? '' : 'none';
       if (s.contourEnabled) {
         for (var m = 400; m <= 480; m += 10) {
           var c = minutesToColor(m);
@@ -207,9 +265,10 @@
       }
 
       // Gradient legend
-      gradBar.style.display = s.gradientEnabled ? 'block' : 'none';
-      gradLabels.style.display = s.gradientEnabled ? 'flex' : 'none';
-      if (s.gradientEnabled) {
+      var showGrad = s.gradientEnabled || s.threeDEnabled;
+      gradBar.style.display = showGrad ? 'block' : 'none';
+      gradLabels.style.display = showGrad ? 'flex' : 'none';
+      if (showGrad) {
         var stops = [];
         for (var m2 = 390; m2 <= 485; m2 += 2) {
           var pct = ((m2 - 390) / (485 - 390) * 100).toFixed(1);

@@ -39,6 +39,11 @@
   gradientOverlay.addTo(map);
   app.gradientOverlay = gradientOverlay;
 
+  // 3Dレンダラー初期化
+  Renderer3D.init();
+  Renderer3D.setFlatPlaneHeight(settings.threeDFlatHeight);
+  app.renderer3d = Renderer3D;
+
   // データ読み込み
   DataManager.load().then(function () {
     var stations = DataManager.stations;
@@ -47,6 +52,7 @@
     // オーバーレイにデータを渡す
     contourOverlay.setStations(stations);
     gradientOverlay.setStations(stations);
+    Renderer3D.setStations(stations);
 
     // マーカー初期化
     MarkerManager.init(map, stations, meta);
@@ -65,6 +71,14 @@
       DataManager.getMajorCount(),
       DataManager.getOutsideCount()
     );
+
+    // 3Dモードの初期適用
+    if (settings.threeDEnabled) {
+      Renderer3D.setMapMode(settings.threeDMapMode || 'texture');
+      Renderer3D.setFlatPlaneHeight(settings.threeDFlatHeight);
+      Renderer3D.show();
+      document.getElementById('map').style.display = 'none';
+    }
 
     initSearch(stations, map);
   }).catch(function (err) {
@@ -113,6 +127,7 @@
         MapManager.onThemeChanged(value);
         MarkerManager.updateTheme();
         contourOverlay.refresh();
+        Renderer3D.updateTheme();
         break;
       case 'tile':
         MapManager.setTileByUser(value);
@@ -131,6 +146,24 @@
         break;
       case 'gakku':
         MarkerManager.setGakkuVisible(value);
+        break;
+      case 'threeD':
+        if (value) {
+          Renderer3D.setMapMode(UIManager.getSettings().threeDMapMode || 'texture');
+          Renderer3D.setFlatPlaneHeight(UIManager.getSettings().threeDFlatHeight);
+          Renderer3D.show();
+          document.getElementById('map').style.display = 'none';
+        } else {
+          Renderer3D.hide();
+          document.getElementById('map').style.display = '';
+          map.invalidateSize();
+        }
+        break;
+      case 'threeDMapMode':
+        Renderer3D.setMapMode(value);
+        break;
+      case 'threeDFlatHeight':
+        Renderer3D.setFlatPlaneHeight(value);
         break;
     }
   }

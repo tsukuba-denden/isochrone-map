@@ -50,4 +50,32 @@ self.onmessage = function (e) {
     }
     self.postMessage({ type: 'GRADIENT_READY', id, values }, [values.buffer]);
   }
+  else if (type === 'CALC_3D_GRID') {
+    const { latMin, latMax, lngMin, lngMax, cols, rows, stations, halfPower } = payload;
+    const grid = new Float32Array(cols * rows);
+    const centerLat = (latMin + latMax) / 2;
+    const cosLat = Math.cos(centerLat * Math.PI / 180);
+    const dLat = (latMax - latMin) / (rows - 1);
+    const dLng = (lngMax - lngMin) / (cols - 1);
+
+    for (let r = 0; r < rows; r++) {
+      const lat = latMax - r * dLat;
+      for (let c = 0; c < cols; c++) {
+        const lng = lngMin + c * dLng;
+        let num = 0, den = 0;
+        for (let i = 0; i < stations.length; i++) {
+          const s = stations[i];
+          const dlat = lat - s.lat;
+          const dlng = (lng - s.lng) * cosLat;
+          const distSq = dlat * dlat + dlng * dlng;
+          if (distSq < 0.00000025) { num = s.minutes; den = 1; break; }
+          const w = 1 / Math.pow(distSq, halfPower);
+          num += w * s.minutes;
+          den += w;
+        }
+        grid[r * cols + c] = den > 0 ? num / den : 0;
+      }
+    }
+    self.postMessage({ type: 'GRID_3D_READY', id, grid, cols, rows }, [grid.buffer]);
+  }
 };

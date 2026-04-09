@@ -61,7 +61,7 @@
       this._visible = opts.visible !== false;
       this._debounceTimer = null;
       this._requestId = 0;
-      this._worker = new Worker('js/worker.js');
+      this._worker = new Worker('js/worker.js?v=9');
       this._worker.onmessage = this._onWorkerMessage.bind(this);
     },
 
@@ -275,7 +275,7 @@
       this._visible = opts.visible || false;
       this._debounceTimer = null;
       this._requestId = 0;
-      this._worker = new Worker('js/worker.js');
+      this._worker = new Worker('js/worker.js?v=9');
       this._worker.onmessage = this._onWorkerMessage.bind(this);
     },
 
