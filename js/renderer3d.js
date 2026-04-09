@@ -300,7 +300,8 @@
 
           // Remap UVs to match tile texture
           var u = uMin + (c / (cols - 1)) * (uMax - uMin);
-          var vv = vMin + (r / (rows - 1)) * (vMax - vMin);
+          // CanvasTexture uses flipY=true, so convert image-space v to UV-space.
+          var vv = 1 - (vMin + (r / (rows - 1)) * (vMax - vMin));
           uvAttr.setXY(idx, u, vv);
 
           // Vertex colors for gradient overlay
@@ -328,10 +329,12 @@
         flatGeom.rotateX(-Math.PI / 2);
         // Remap UVs for the flat plane
         var flatUV = flatGeom.attributes.uv;
-        flatUV.setXY(0, uMin, vMax);  // bottom-left
-        flatUV.setXY(1, uMax, vMax);  // bottom-right
-        flatUV.setXY(2, uMin, vMin);  // top-left
-        flatUV.setXY(3, uMax, vMin);  // top-right
+        var uvTop = 1 - vMin;
+        var uvBottom = 1 - vMax;
+        flatUV.setXY(0, uMin, uvTop);     // top-left
+        flatUV.setXY(1, uMax, uvTop);     // top-right
+        flatUV.setXY(2, uMin, uvBottom);  // bottom-left
+        flatUV.setXY(3, uMax, uvBottom);  // bottom-right
         var flatMat = new THREE.MeshLambertMaterial({
           map: mapTexture,
           side: THREE.DoubleSide
