@@ -57,6 +57,24 @@
       };
     },
 
+    _getRingStrokeVar: function (radius, strokeByRadius) {
+      if (strokeByRadius && strokeByRadius[radius]) return strokeByRadius[radius];
+      if (strokeByRadius) {
+        var keys = Object.keys(strokeByRadius)
+          .map(function (k) { return parseInt(k, 10); })
+          .filter(function (k) { return !isNaN(k); })
+          .sort(function (a, b) { return a - b; });
+        if (keys.length) {
+          var nearest = keys[0];
+          for (var i = 1; i < keys.length; i++) {
+            if (Math.abs(keys[i] - radius) < Math.abs(nearest - radius)) nearest = keys[i];
+          }
+          return strokeByRadius[nearest];
+        }
+      }
+      return '--dest-ring-10km-stroke';
+    },
+
     _createDestinationRings: function () {
       var dest = CONFIG.destination;
       var rings = CONFIG.destinationRings;
@@ -65,7 +83,7 @@
       var ringStyles = this._getDestinationRingStyles();
       var style = getComputedStyle(document.documentElement);
       this._destRings = rings.radiiMeters.map(function (radius) {
-        var strokeVar = ringStyles.strokeByRadius[radius] || '--dest-ring-15km-stroke';
+        var strokeVar = this._getRingStrokeVar(radius, ringStyles.strokeByRadius);
         var strokeColor = style.getPropertyValue(strokeVar).trim() || 'rgba(255, 107, 107, 0.5)';
         return L.circle([dest.lat, dest.lng], {
           radius: radius,
@@ -76,7 +94,7 @@
           fillOpacity: 0.08,
           interactive: false,
         });
-      });
+      }.bind(this));
     },
 
     setDestinationRingsVisible: function (visible) {
@@ -245,13 +263,13 @@
         var cs = getComputedStyle(document.documentElement);
         this._destRings.forEach(function (ring) {
           var radius = ring.getRadius();
-          var strokeVar = ringStyle.strokeByRadius[radius] || '--dest-ring-15km-stroke';
+          var strokeVar = this._getRingStrokeVar(radius, ringStyle.strokeByRadius);
           var strokeColorRing = cs.getPropertyValue(strokeVar).trim() || 'rgba(255, 107, 107, 0.5)';
           ring.setStyle({
             color: strokeColorRing,
             fillColor: ringStyle.fillColor,
           });
-        });
+        }.bind(this));
       }
 
       // 学区レイヤーの色も更新
