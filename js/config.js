@@ -34,14 +34,15 @@
     defaultLabelsEnabled: true,
     defaultGakkuEnabled: true,
 
-    // 目的地同心円（5km/10km）
+    // 目的地同心円（5km/10km/15km）
     destinationRings: {
       enabledDefault: false,
-      radiiMeters: [5000, 10000],
+      radiiMeters: [5000, 10000, 15000],
       styleVars: {
         strokeByRadius: {
           5000: '--dest-ring-5km-stroke',
           10000: '--dest-ring-10km-stroke',
+          15000: '--dest-ring-15km-stroke',
         },
         fill: '--dest-ring-fill',
       },
