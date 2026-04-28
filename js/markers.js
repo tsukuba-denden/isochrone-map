@@ -65,7 +65,7 @@
       var ringStyles = this._getDestinationRingStyles();
       var style = getComputedStyle(document.documentElement);
       this._destRings = rings.radiiMeters.map(function (radius) {
-        var strokeVar = ringStyles.strokeByRadius[radius] || '--dest-ring-10km-stroke';
+        var strokeVar = ringStyles.strokeByRadius[radius] || '--dest-ring-15km-stroke';
         var strokeColor = style.getPropertyValue(strokeVar).trim() || 'rgba(255, 107, 107, 0.5)';
         return L.circle([dest.lat, dest.lng], {
           radius: radius,
@@ -245,7 +245,7 @@
         var cs = getComputedStyle(document.documentElement);
         this._destRings.forEach(function (ring) {
           var radius = ring.getRadius();
-          var strokeVar = ringStyle.strokeByRadius[radius] || '--dest-ring-10km-stroke';
+          var strokeVar = ringStyle.strokeByRadius[radius] || '--dest-ring-15km-stroke';
           var strokeColorRing = cs.getPropertyValue(strokeVar).trim() || 'rgba(255, 107, 107, 0.5)';
           ring.setStyle({
             color: strokeColorRing,
