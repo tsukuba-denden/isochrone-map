@@ -34,6 +34,19 @@
     defaultLabelsEnabled: true,
     defaultGakkuEnabled: true,
 
+    // 目的地同心円（5km/10km）
+    destinationRings: {
+      enabledDefault: false,
+      radiiMeters: [5000, 10000],
+      styleVars: {
+        strokeByRadius: {
+          5000: '--dest-ring-5km-stroke',
+          10000: '--dest-ring-10km-stroke',
+        },
+        fill: '--dest-ring-fill',
+      },
+    },
+
     // IDW補間パラメータ
     idwPower: 2.5,
 

@@ -57,6 +57,7 @@
     // マーカー初期化
     MarkerManager.init(map, stations, meta);
     MarkerManager.setLabelsEnabled(settings.labelsEnabled);
+    MarkerManager.setDestinationRingsVisible(settings.radiusRingsEnabled);
 
     // 学区境界
     if (DataManager.gakku) {
@@ -152,6 +153,9 @@
         break;
       case 'gakku':
         MarkerManager.setGakkuVisible(value);
+        break;
+      case 'radiusRings':
+        MarkerManager.setDestinationRingsVisible(value);
         break;
       case 'threeD':
         if (value) {

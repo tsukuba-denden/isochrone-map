@@ -9,6 +9,7 @@
     _meta: null,
     _markers: [],    // { marker, label, data }
     _destMarker: null,
+    _destRings: [],
     _labelsEnabled: true,
     _gakkuLayer: null,
     _gakkuAnimId: null,
@@ -17,6 +18,7 @@
       this._map = map;
       this._meta = meta;
       this._createDestMarker();
+      this._createDestinationRings();
       this._createStationMarkers(stations);
       map.on('zoomend', this._updateDisplay.bind(this));
       this._updateDisplay();
@@ -42,6 +44,50 @@
         '</div>',
         { direction: 'top', offset: [0, -12], className: 'station-tooltip-wrapper', opacity: 1 }
       );
+    },
+
+    _getDestinationRingStyles: function () {
+      var style = getComputedStyle(document.documentElement);
+      var config = CONFIG.destinationRings && CONFIG.destinationRings.styleVars ? CONFIG.destinationRings.styleVars : {};
+      var fillVar = config.fill || '--dest-ring-fill';
+      var strokeByRadius = config.strokeByRadius || {};
+      return {
+        fillColor: style.getPropertyValue(fillVar).trim() || 'rgba(255, 107, 107, 0.08)',
+        strokeByRadius: strokeByRadius,
+      };
+    },
+
+    _createDestinationRings: function () {
+      var dest = CONFIG.destination;
+      var rings = CONFIG.destinationRings;
+      if (!dest || !rings || !rings.radiiMeters || !rings.radiiMeters.length) return;
+
+      var ringStyles = this._getDestinationRingStyles();
+      var style = getComputedStyle(document.documentElement);
+      this._destRings = rings.radiiMeters.map(function (radius) {
+        var strokeVar = ringStyles.strokeByRadius[radius] || '--dest-ring-10km-stroke';
+        var strokeColor = style.getPropertyValue(strokeVar).trim() || 'rgba(255, 107, 107, 0.5)';
+        return L.circle([dest.lat, dest.lng], {
+          radius: radius,
+          color: strokeColor,
+          weight: 1.5,
+          opacity: 0.9,
+          fillColor: ringStyles.fillColor,
+          fillOpacity: 0.08,
+          interactive: false,
+        });
+      });
+    },
+
+    setDestinationRingsVisible: function (visible) {
+      if (!this._destRings || !this._destRings.length) return;
+      this._destRings.forEach(function (ring) {
+        if (visible) {
+          if (!this._map.hasLayer(ring)) ring.addTo(this._map);
+        } else if (this._map.hasLayer(ring)) {
+          this._map.removeLayer(ring);
+        }
+      }.bind(this));
     },
 
     _getMarkerStroke: function () {
@@ -192,6 +238,22 @@
       this._markers.forEach(function (item) {
         item.marker.setStyle({ color: strokeColor });
       });
+
+      // 目的地同心円の色も更新
+      if (this._destRings && this._destRings.length) {
+        var ringStyle = this._getDestinationRingStyles();
+        var cs = getComputedStyle(document.documentElement);
+        this._destRings.forEach(function (ring) {
+          var radius = ring.getRadius();
+          var strokeVar = ringStyle.strokeByRadius[radius] || '--dest-ring-10km-stroke';
+          var strokeColorRing = cs.getPropertyValue(strokeVar).trim() || 'rgba(255, 107, 107, 0.5)';
+          ring.setStyle({
+            color: strokeColorRing,
+            fillColor: ringStyle.fillColor,
+          });
+        });
+      }
+
       // 学区レイヤーの色も更新
       if (this._gakkuLayer) {
         var cs = getComputedStyle(document.documentElement);
