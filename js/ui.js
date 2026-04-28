@@ -43,6 +43,7 @@
         gradientEnabled: CONFIG.defaultGradientEnabled,
         labelsEnabled: CONFIG.defaultLabelsEnabled,
         gakkuEnabled: CONFIG.defaultGakkuEnabled,
+        radiusRingsEnabled: CONFIG.destinationRings.enabledDefault,
       };
     },
 
@@ -83,6 +84,7 @@
       document.getElementById('toggle-gradient').checked = s.gradientEnabled;
       document.getElementById('toggle-labels').checked = s.labelsEnabled;
       document.getElementById('toggle-gakku').checked = s.gakkuEnabled;
+      document.getElementById('toggle-radius-rings').checked = s.radiusRingsEnabled;
       document.getElementById('select-interval').value = String(s.contourInterval);
       document.getElementById('select-tile').value = s.tileId || CONFIG.defaultTile[s.theme];
       document.getElementById('toggle-theme').checked = s.theme === 'dark';
@@ -157,6 +159,13 @@
         self._settings.gakkuEnabled = this.checked;
         self._saveSettings();
         self._notify('gakku', this.checked);
+      });
+
+      // Destination radius rings toggle
+      document.getElementById('toggle-radius-rings').addEventListener('change', function () {
+        self._settings.radiusRingsEnabled = this.checked;
+        self._saveSettings();
+        self._notify('radiusRings', this.checked);
       });
 
       // 3D toggle

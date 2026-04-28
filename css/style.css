@@ -15,6 +15,10 @@
   --marker-stroke: #fff;
   --gakku-fill: rgba(255, 100, 0, 0.10);
   --gakku-stroke: rgba(255, 120, 0, 0.9);
+  --dest-ring-5km-stroke: rgba(255, 107, 107, 0.85);
+  --dest-ring-10km-stroke: rgba(255, 140, 102, 0.75);
+  --dest-ring-15km-stroke: rgba(255, 171, 120, 0.68);
+  --dest-ring-fill: rgba(255, 107, 107, 0.10);
   --title-gradient-start: rgba(255, 255, 255, 0.94);
   --title-gradient-end: rgba(255, 255, 255, 0);
   --title-text: #1a1a1a;
@@ -35,6 +39,10 @@
   --marker-stroke: #444;
   --gakku-fill: rgba(255, 140, 40, 0.12);
   --gakku-stroke: rgba(255, 160, 50, 0.9);
+  --dest-ring-5km-stroke: rgba(255, 140, 140, 0.9);
+  --dest-ring-10km-stroke: rgba(255, 174, 128, 0.8);
+  --dest-ring-15km-stroke: rgba(255, 201, 150, 0.72);
+  --dest-ring-fill: rgba(255, 128, 128, 0.14);
   --title-gradient-start: rgba(10, 10, 15, 0.94);
   --title-gradient-end: rgba(10, 10, 15, 0);
   --title-text: #fff;
